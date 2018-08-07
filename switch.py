@@ -92,11 +92,12 @@ options = {
 }
 
 # Define the string which we need to filter.
-string = "axes"
+string = "loads"
 
 # Available alternatives.
 strings = []
 
 # Go over the original string and start to build the strings.
 recurse_switcher(base_string=string, alternatives=options, new_strings=strings, char_position=0)
-print(strings)
+print("The total options number is: " + str(len(strings)) + "\n")
+# print(strings)
