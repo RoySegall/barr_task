@@ -25,7 +25,8 @@ def recurse_switcher(base_string, alternatives, new_strings, char_position):
 
         if char_position == 0:
             # Append the rest of the string to the char.
-            new_strings.append(str(new_char) + string[char_position + 1:])
+            new_string = str(new_char) + string[char_position + 1:]
+            massage_new_string(new_string=new_string, alternatives=alternatives, new_strings=new_strings)
 
             # Append the char which exists in the original string.
             string_with_original = str(original_char) + string[char_position + 1:]
@@ -34,7 +35,8 @@ def recurse_switcher(base_string, alternatives, new_strings, char_position):
 
         if not(char_position == 0) and not char_position == len(base_string):
             # Append the previous chars of the string and rest chars of the string.
-            new_strings.append(string[:char_position] + str(new_char) + string[char_position + 1:])
+            new_string = string[:char_position] + str(new_char) + string[char_position + 1:]
+            massage_new_string(new_string=new_string, alternatives=alternatives, new_strings=new_strings)
 
             # Append the char which exists in the original string.
             string_with_original = string[:char_position] + str(original_char) + string[char_position + 1:]
@@ -43,7 +45,8 @@ def recurse_switcher(base_string, alternatives, new_strings, char_position):
 
         if char_position == len(base_string):
             # Append all the chard ahead of the string.
-            new_strings.append(str(original_char) + string[char_position + 1:])
+            new_string = str(original_char) + string[char_position + 1:]
+            massage_new_string(new_string=new_string, alternatives=alternatives, new_strings=new_strings)
 
             string_with_original = str(new_char) + string[char_position + 1:]
             if string_with_original not in new_strings:
@@ -51,6 +54,33 @@ def recurse_switcher(base_string, alternatives, new_strings, char_position):
 
     # Call the next char in line.
     recurse_switcher(base_string, alternatives, new_strings, char_position + 1)
+
+
+def massage_new_string(new_string, alternatives, new_strings):
+    """
+    Go over the new string we created and replace the chars with their replacements.
+
+    :param new_string:
+        The new string we appended.
+    :param alternatives:
+        The alternatives dictionary.
+    :param new_strings:
+        The strings lists which get the strings.
+    :return:
+    """
+    for char in new_string:
+
+        if char not in alternatives.keys():
+            continue
+
+        for replace in alternatives[char]:
+            string_to_append = new_string.replace(char, str(replace))
+
+            if string_to_append not in new_strings:
+                new_strings.append(new_string.replace(char, str(replace)))
+
+    if new_string not in new_strings:
+        new_strings.append(new_string)
 
 
 # Set the chars and their other representations.
